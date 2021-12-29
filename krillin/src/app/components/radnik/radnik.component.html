@@ -1,1 +1,49 @@
-<p class="mt-5">radnik works!</p>
+<div class="mt-5 d-flex container flex-column col-4 justify-content-center">
+    <h2 class="mt-5 mx-auto">Radnik</h2>
+    <form #registerForm="ngForm" (ngSubmit)="insert(registerForm)">
+        <div class="mb-3">
+            <label for="exampleInputEmail1" class="form-label">Šifra radnika</label>
+            <div class="d-flex flex-row">
+                <input type="number" class="form-control" id="exampleInputEmail1" autocomplete="off" ngModel name="sifra"
+                [(ngModel)]="sifra" aria-describedby="emailHelp" required >
+            <button class="btn btn-warning" (click)="get(registerForm.value.sifra)">Pronađi</button>
+            <button class="btn btn-success" *ngIf="pronadjiClicked" (click)="ocisti()">Odustani</button>
+            </div>
+        </div>
+        <div class="mb-3">
+            <label for="exampleInputEmail1" class="form-label">JMBG</label>
+            <input type="text" class="form-control" id="exampleInputEmail1" autocomplete="off" ngModel name="jmbg"
+                [(ngModel)]="jmbg" aria-describedby="emailHelp" required minlength="13" maxlength="13">
+                <div class="invalid-feedback">
+                    JMBG mora sadržati tačno 13 karaktera.
+                </div>
+        </div>
+        <div class="mb-3">
+            <label for="exampleInputPassword1" class="form-label">Ime Prezime</label>
+            <input type="text" class="form-control" id="exampleInputPassword1" autocomplete="off" ngModel
+                name="ime_prezime" [(ngModel)]="ime_prezime" required minlength="4">
+        </div>
+        <div class="mb-3">
+            <label for="exampleInputPassword1" class="form-label">Koeficijent</label>
+            <input type="number" class="form-control" id="exampleInputPassword1" ngModel name="koeficijent"
+                [(ngModel)]="koeficijent" required>
+        </div>
+        <label>Status</label>
+        <select class="form-select mb-3" aria-label="Default select example" name="status" [(ngModel)]="status">
+            <option [value]="statusi[i]" *ngFor="let status of statusi; let i=index">{{status}}</option>
+        </select>
+        <label>Pozicija</label>
+        <select class="form-select mb-3" aria-label="Default select example" name="pozicija" [(ngModel)]="pozicija">
+            <option [value]="pozicije[i]" *ngFor="let pozicija of pozicije; let i=index">{{pozicija}}</option>
+        </select>
+        <div class="mb-3">
+            <label for="exampleInputPassword1" class="form-label">Datum zaposlenja</label>
+            <input type="datetime-local" step="1" class="form-control" id="exampleInputPassword1" ngModel
+                name="datum_zaposlenja" [(ngModel)]="datum_zaposlenja" required>
+        </div>
+        <button class="btn btn-success col-12" type="submit" *ngIf="!pronadjiClicked; else block">Sačuvaj</button>
+        <ng-template #block>
+            <button class="btn btn-warning col-12" (click)="update(registerForm)">Izmeni</button>
+        </ng-template>
+    </form>
+</div>

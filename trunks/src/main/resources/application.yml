@@ -1,0 +1,7 @@
+spring:
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    platform: postgresql
+    url: jdbc:postgresql://localhost:5432/krillin
+    username: user
+    password: pwd123
