@@ -116,6 +116,7 @@ export class RadnikComponent implements OnInit {
           this.openDialog(false, 'Uspešno!', 'Uspešno ste izmenili radnika!');
         }
       });
+      this.ocisti();
     } else {
       this.openDialog(true, 'Greška!', 'Forma nije validna!');
     }
