@@ -14,6 +14,7 @@ import { ModalComponent } from './components/modals/modal/modal.component';
 
 import {MatDialogModule} from '@angular/material/dialog';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { StavkaComponent } from './components/stavka/stavka.component';
 
 
 @NgModule({
@@ -23,7 +24,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     NarudzbenicaComponent,
     HomeComponent,
     NavbarComponent,
-    ModalComponent
+    ModalComponent,
+    StavkaComponent
   ],
   imports: [
     BrowserModule,

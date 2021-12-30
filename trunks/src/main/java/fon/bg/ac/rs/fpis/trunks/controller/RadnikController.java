@@ -1,7 +1,6 @@
 package fon.bg.ac.rs.fpis.trunks.controller;
 
 import fon.bg.ac.rs.fpis.trunks.dto.RadnikDto;
-import fon.bg.ac.rs.fpis.trunks.exceptions.RadnikNotFoundException;
 import fon.bg.ac.rs.fpis.trunks.model.Radnik;
 import fon.bg.ac.rs.fpis.trunks.service.RadnikService;
 import org.slf4j.Logger;

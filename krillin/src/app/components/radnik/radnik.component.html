@@ -4,29 +4,28 @@
         <div class="mb-3">
             <label for="exampleInputEmail1" class="form-label">Šifra radnika</label>
             <div class="d-flex flex-row">
-                <input type="number" class="form-control" id="exampleInputEmail1" autocomplete="off" ngModel name="sifra"
-                [(ngModel)]="sifra" aria-describedby="emailHelp" required >
-            <button class="btn btn-warning" (click)="get(registerForm.value.sifra)">Pronađi</button>
-            <button class="btn btn-success" *ngIf="pronadjiClicked" (click)="ocisti()">Odustani</button>
+                <input type="number" class="form-control" id="exampleInputEmail1" autocomplete="off" ngModel
+                    name="sifra" [(ngModel)]="sifra" aria-describedby="emailHelp" required
+                    placeholder="Šifru unosite samo ako pretražujete">
+                <button class="btn btn-warning" (click)="get(registerForm.value.sifra)">Pronađi</button>
+                <button class="btn btn-success" *ngIf="pronadjiClicked" (click)="ocisti()">Odustani</button>
             </div>
         </div>
         <div class="mb-3">
             <label for="exampleInputEmail1" class="form-label">JMBG</label>
             <input type="text" class="form-control" id="exampleInputEmail1" autocomplete="off" ngModel name="jmbg"
-                [(ngModel)]="jmbg" aria-describedby="emailHelp" required minlength="13" maxlength="13">
-                <div class="invalid-feedback">
-                    JMBG mora sadržati tačno 13 karaktera.
-                </div>
+                [(ngModel)]="jmbg" aria-describedby="emailHelp" required minlength="13" maxlength="13" placeholder="Unesite JMBG">
+            <div id="emailHelp" class="form-text">Nikada nećemo deliti Vaš JMBG.</div>
         </div>
         <div class="mb-3">
             <label for="exampleInputPassword1" class="form-label">Ime Prezime</label>
             <input type="text" class="form-control" id="exampleInputPassword1" autocomplete="off" ngModel
-                name="ime_prezime" [(ngModel)]="ime_prezime" required minlength="4">
+                name="ime_prezime" [(ngModel)]="ime_prezime" required minlength="4" placeholder="Unesite ime i prezime">
         </div>
         <div class="mb-3">
             <label for="exampleInputPassword1" class="form-label">Koeficijent</label>
             <input type="number" class="form-control" id="exampleInputPassword1" ngModel name="koeficijent"
-                [(ngModel)]="koeficijent" required>
+                [(ngModel)]="koeficijent" required placeholder="Unesite koeficijent">
         </div>
         <label>Status</label>
         <select class="form-select mb-3" aria-label="Default select example" name="status" [(ngModel)]="status">

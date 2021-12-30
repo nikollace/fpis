@@ -1,1 +1,44 @@
-<p>narudzbenica works!</p>
+<div class="align-self-center">
+    <div class="mt-4 mb-5">
+        test
+    </div>
+    <div class="mt-5 d-flex container flex-row border border-dark rounded pb-2">
+        <div class="d-flex container flex-column col-4 justify-content-center">
+            <h2 class="mx-auto">Narudžbenica</h2>
+            <div class="mb-3 d-flex flex-column justify-content-after">
+                <label for="exampleInputEmail1" class="form-label">Pib dobavljača *</label>
+                <div class="d-flex flex-row col-8">
+                    <input type="number" class="form-control" id="exampleInputEmail1" autocomplete="off" ngModel
+                        name="sifra" aria-describedby="emailHelp" required placeholder="Pretraži dobavljača">
+                    <button class="btn btn-warning">Pronađi dobavljača</button>
+                </div>
+            </div>
+            <form #registerForm="ngForm">
+                <div class="mb-3">
+                    <label for="exampleInputEmail1" class="form-label">Šifra narudžbenice *</label>
+                    <div class="d-flex flex-row">
+                        <input type="number" class="form-control" id="exampleInputEmail1" autocomplete="off" ngModel
+                            name="sifra" aria-describedby="emailHelp" required placeholder="Pretraži narudžbenicu">
+                        <button class="btn btn-success">Nova</button>
+                        <button class="btn btn-warning">Pronađi</button>
+                        <button class="btn btn-danger">Odustani</button>
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label for="exampleInputEmail1" class="form-label">Napomena</label>
+                    <input type="text" class="form-control" id="exampleInputEmail1" autocomplete="off" ngModel
+                        name="jmbg" aria-describedby="emailHelp" placeholder="Unesite Napomenu">
+                </div>
+                <div class="mb-3">
+                    <label for="exampleInputPassword1" class="form-label">Datum *</label>
+                    <input type="datetime-local" step="1" class="form-control" id="exampleInputPassword1" ngModel
+                        name="datum_zaposlenja" required>
+                </div>
+                <button class="btn btn-success col-12" type="submit">Sačuvaj</button>
+            </form>
+        </div>
+        <div class="d-flex container flex-column justify-content-center">
+            <app-stavka></app-stavka>
+        </div>
+    </div>
+</div>
