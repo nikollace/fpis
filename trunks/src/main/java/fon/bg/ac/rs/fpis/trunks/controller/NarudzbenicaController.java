@@ -13,12 +13,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.convert.ConversionService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import javax.lang.model.type.ArrayType;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @RestController
@@ -59,10 +60,47 @@ public class NarudzbenicaController {
         return materijali.stream().map(m -> conversionService.convert(m, MaterijalDto.class)).collect(Collectors.toList());
     }
 
-    @GetMapping("/stavka")
-    public List<StavkaNarudzbeniceDto> vratiStavke() {
+    @GetMapping("/stavka/{id}")
+    public List<StavkaNarudzbeniceDto> vratiStavke(@PathVariable Long id) {
         logger.info("Getting stavke narudzbenice...");
-        List<StavkaNarudzbenice> stavke = narudzbenicaService.vratiStavke();
+        List<StavkaNarudzbenice> stavke = narudzbenicaService.vratiStavke(id);
         return stavke.stream().map(s -> conversionService.convert(s, StavkaNarudzbeniceDto.class)).collect(Collectors.toList());
+    }
+
+    @GetMapping("/max")
+    public List<Long> dajMax() {
+        logger.info("Getting max...");
+        List<Long> max = narudzbenicaService.dajMax();
+        return max;
+    }
+
+    @PostMapping
+    public Boolean sacuvajNarudzbenicu(@RequestBody NarudzbenicaDto narudzbenicaDto) {
+        logger.info("Inserting narudzbenica...");
+        Boolean uspesno = narudzbenicaService.sacuvajNarudzbenicu(narudzbenicaDto);
+        if(uspesno == true) {
+            logger.info("Successfully saved narudzbenica.");
+        } else {
+            logger.error("Error saving narudzbenica.");
+        }
+        return uspesno;
+    }
+
+    @PatchMapping("/{id}")
+    public Boolean izmeniNarudzbenicu(@RequestBody NarudzbenicaDto narudzbenicaDto, @PathVariable Long id) {
+        logger.info("Updating narudzbenica...");
+        Boolean uspesno = narudzbenicaService.izmeniNarudzbenicu(narudzbenicaDto, id);
+        if(uspesno == true) {
+            logger.info("Successfully updated narudzbenica.");
+        } else {
+            logger.error("Error updating narudzbenica.");
+        }
+        return uspesno;
+    }
+
+    @PostMapping("/stavka/{sifra}")
+    public void obrisiStavku(@RequestBody ArrayList<Long> rbr, @PathVariable Long sifra) {
+        logger.info("Deleting stavka narudzbenice...");
+        narudzbenicaService.obrisiStavku(rbr, sifra);
     }
 }

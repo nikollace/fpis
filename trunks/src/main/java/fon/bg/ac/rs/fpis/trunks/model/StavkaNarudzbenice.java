@@ -4,7 +4,7 @@ import java.util.Objects;
 
 public class StavkaNarudzbenice {
 
-    private Long redniBroj;
+    private Long redni_broj;
     private Narudzbenica narudzbenica;
     private Integer kolicina;
     private String jm;
@@ -14,19 +14,19 @@ public class StavkaNarudzbenice {
     }
 
     public StavkaNarudzbenice(Long redniBroj, Narudzbenica narudzbenica, Integer kolicina, String jm, Materijal materijal) {
-        this.redniBroj = redniBroj;
+        this.redni_broj = redniBroj;
         this.narudzbenica = narudzbenica;
         this.kolicina = kolicina;
         this.jm = jm;
         this.materijal = materijal;
     }
 
-    public Long getRedniBroj() {
-        return redniBroj;
+    public Long getRedni_broj() {
+        return redni_broj;
     }
 
-    public void setRedniBroj(Long redniBroj) {
-        this.redniBroj = redniBroj;
+    public void setRedni_broj(Long redni_broj) {
+        this.redni_broj = redni_broj;
     }
 
     public Narudzbenica getNarudzbenica() {
@@ -66,18 +66,18 @@ public class StavkaNarudzbenice {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         StavkaNarudzbenice that = (StavkaNarudzbenice) o;
-        return Objects.equals(redniBroj, that.redniBroj) && Objects.equals(narudzbenica, that.narudzbenica) && Objects.equals(kolicina, that.kolicina) && Objects.equals(jm, that.jm) && Objects.equals(materijal, that.materijal);
+        return Objects.equals(redni_broj, that.redni_broj) && Objects.equals(narudzbenica, that.narudzbenica) && Objects.equals(kolicina, that.kolicina) && Objects.equals(jm, that.jm) && Objects.equals(materijal, that.materijal);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(redniBroj, narudzbenica, kolicina, jm, materijal);
+        return Objects.hash(redni_broj, narudzbenica, kolicina, jm, materijal);
     }
 
     @Override
     public String toString() {
         return "StavkaNarudzbenice{" +
-                "redniBroj=" + redniBroj +
+                "redniBroj=" + redni_broj +
                 ", narudzbenica=" + narudzbenica +
                 ", kolicina=" + kolicina +
                 ", jm='" + jm + '\'' +

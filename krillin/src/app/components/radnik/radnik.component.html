@@ -3,12 +3,16 @@
     <form #registerForm="ngForm" (ngSubmit)="insert(registerForm)">
         <div class="mb-3">
             <label for="exampleInputEmail1" class="form-label">Šifra radnika</label>
-            <div class="d-flex flex-row">
-                <input type="number" class="form-control" id="exampleInputEmail1" autocomplete="off" ngModel
+            <div class="radnik">
+                <div>
+                    <input type="number" class="form-control" id="exampleInputEmail1" autocomplete="off" ngModel
                     name="sifra" [(ngModel)]="sifra" aria-describedby="emailHelp" required
                     placeholder="Šifru unosite samo ako pretražujete">
-                <button class="btn btn-warning" (click)="get(registerForm.value.sifra)">Pronađi</button>
-                <button class="btn btn-success" *ngIf="pronadjiClicked" (click)="ocisti()">Odustani</button>
+                </div>
+                <div>
+                    <button class="btn btn-warning" (click)="get(registerForm.value.sifra)">Pronađi</button>
+                    <button class="btn btn-success" *ngIf="pronadjiClicked" (click)="ocisti()">Odustani</button>
+                </div>
             </div>
         </div>
         <div class="mb-3">

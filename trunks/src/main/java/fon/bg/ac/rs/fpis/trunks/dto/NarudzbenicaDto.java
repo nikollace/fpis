@@ -2,8 +2,10 @@ package fon.bg.ac.rs.fpis.trunks.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import fon.bg.ac.rs.fpis.trunks.model.Dobavljac;
+import fon.bg.ac.rs.fpis.trunks.model.StavkaNarudzbenice;
 
 import java.sql.Timestamp;
+import java.util.List;
 import java.util.Objects;
 
 public class NarudzbenicaDto {
@@ -20,6 +22,9 @@ public class NarudzbenicaDto {
     @JsonProperty("napomena")
     private String napomena;
 
+    @JsonProperty("stavke")
+    private List<StavkaNarudzbenice> stavke;
+
     public NarudzbenicaDto() {
     }
 
@@ -28,6 +33,14 @@ public class NarudzbenicaDto {
         this.dobavljac = dobavljac;
         this.datum = datum;
         this.napomena = napomena;
+    }
+
+    public NarudzbenicaDto(Long sifra, Dobavljac dobavljac, Timestamp datum, String napomena, List<StavkaNarudzbenice> stavke) {
+        this.sifra = sifra;
+        this.dobavljac = dobavljac;
+        this.datum = datum;
+        this.napomena = napomena;
+        this.stavke = stavke;
     }
 
     public Long getSifra() {
@@ -62,17 +75,25 @@ public class NarudzbenicaDto {
         this.napomena = napomena;
     }
 
+    public List<StavkaNarudzbenice> getStavke() {
+        return stavke;
+    }
+
+    public void setStavke(List<StavkaNarudzbenice> stavke) {
+        this.stavke = stavke;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         NarudzbenicaDto that = (NarudzbenicaDto) o;
-        return Objects.equals(sifra, that.sifra) && Objects.equals(dobavljac, that.dobavljac) && Objects.equals(datum, that.datum) && Objects.equals(napomena, that.napomena);
+        return Objects.equals(sifra, that.sifra) && Objects.equals(dobavljac, that.dobavljac) && Objects.equals(datum, that.datum) && Objects.equals(napomena, that.napomena) && Objects.equals(stavke, that.stavke);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(sifra, dobavljac, datum, napomena);
+        return Objects.hash(sifra, dobavljac, datum, napomena, stavke);
     }
 
     @Override
@@ -82,6 +103,7 @@ public class NarudzbenicaDto {
                 ", dobavljac=" + dobavljac +
                 ", datum=" + datum +
                 ", napomena='" + napomena + '\'' +
+                ", stavke=" + stavke +
                 '}';
     }
 }

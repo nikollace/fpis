@@ -12,10 +12,17 @@ import { HomeComponent } from './components/home/home.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { ModalComponent } from './components/modals/modal/modal.component';
 
-import {MatDialogModule} from '@angular/material/dialog';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
+import { MatToolbarModule } from '@angular/material/toolbar';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { StavkaComponent } from './components/stavka/stavka.component';
+import { DialogComponent } from './components/dialog/dialog.component';
+import { LoginComponent } from './components/login/login.component';
 
+import { SocialLoginModule, SocialAuthServiceConfig } from 'angularx-social-login';
+import { GoogleLoginProvider } from 'angularx-social-login';
 
 @NgModule({
   declarations: [
@@ -25,7 +32,9 @@ import { StavkaComponent } from './components/stavka/stavka.component';
     HomeComponent,
     NavbarComponent,
     ModalComponent,
-    StavkaComponent
+    StavkaComponent,
+    DialogComponent,
+    LoginComponent
   ],
   imports: [
     BrowserModule,
@@ -33,9 +42,28 @@ import { StavkaComponent } from './components/stavka/stavka.component';
     HttpClientModule,
     FormsModule,
     MatDialogModule,
+    MatIconModule,
+    MatButtonModule,
+    MatToolbarModule,
     BrowserAnimationsModule,
+    SocialLoginModule,
   ],
-  providers: [],
+  providers: [
+    {
+      provide: 'SocialAuthServiceConfig',
+      useValue: {
+        autoLogin: false,
+        providers: [
+          {
+            id: GoogleLoginProvider.PROVIDER_ID,
+            provider: new GoogleLoginProvider(
+              '256078289810-7dv0j3gd1pcig163d4804ldrgdc9s6gr.apps.googleusercontent.com'
+            )
+          },
+        ]
+      } as SocialAuthServiceConfig,
+    }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

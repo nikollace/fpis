@@ -9,8 +9,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Repository
 public class NarudzbenicaRepository implements AbstractRepository<Narudzbenica, Long> {
@@ -18,6 +17,34 @@ public class NarudzbenicaRepository implements AbstractRepository<Narudzbenica, 
     public static final Logger logger = LoggerFactory.getLogger(NarudzbenicaRepository.class);
 
     private final JdbcTemplate jdbcTemplate;
+
+    private class Brisanje {
+        private Long rbr;
+        private Long sifraNar;
+
+        public Brisanje(Long rbr, Long sifraNar) {
+            this.rbr = rbr;
+            this.sifraNar = sifraNar;
+        }
+
+        public Long getRbr() {
+            return rbr;
+        }
+
+        public Long getSifraNar() {
+            return sifraNar;
+        }
+
+        @Override
+        public String toString() {
+            return "Brisanje{" +
+                    "rbr=" + rbr +
+                    ", sifraNar=" + sifraNar +
+                    '}';
+        }
+    }
+
+    private List<Brisanje> listaZaBrisanje;
 
     RowMapper<Narudzbenica> rowMapperNarudzbenica = (rs, rowNum) -> {
         Narudzbenica narudzbenica = new Narudzbenica();
@@ -34,11 +61,45 @@ public class NarudzbenicaRepository implements AbstractRepository<Narudzbenica, 
     @Autowired
     public NarudzbenicaRepository(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
+        listaZaBrisanje = new ArrayList<>();
     }
 
     @Override
     public Boolean insert(Narudzbenica narudzbenica) {
-        return null;
+        logger.info("Creating Narudzbenica from request: {}", narudzbenica);
+        String sql = "insert into narudzbenica(sifra, dobavljac, datum, napomena) values (?, ?, ?, ?)";
+
+        int inserted = jdbcTemplate.update(sql,
+                narudzbenica.getSifra(),
+                narudzbenica.getDobavljac().getPib(),
+                narudzbenica.getDatum(),
+                narudzbenica.getNapomena());
+        if (inserted == 1) {
+            logger.info("Inserted Narudzbenica: {}", narudzbenica.getSifra());
+        } else {
+            logger.error("Narudzbenica can not be inserted.");
+        }
+
+        String stavkaSql = "insert into stavka_narudzbenice(redni_broj, narudzbenica, kolicina, jm, materijal) values (?, ?, ?, ?, ?)";
+        int brojac = 0;
+        while (brojac < narudzbenica.getStavke().size()) {
+            logger.info("Inserting stavka narudzbenice...");
+            int uspesno = jdbcTemplate.update(stavkaSql,
+                    narudzbenica.getStavke().get(brojac).getRedni_broj(),
+                    narudzbenica.getSifra(),
+                    narudzbenica.getStavke().get(brojac).getKolicina(),
+                    narudzbenica.getStavke().get(brojac).getJm(),
+                    Long.valueOf(narudzbenica.getStavke().get(brojac).getMaterijal().getSifra()));
+            if (uspesno == 1) {
+                logger.info("Inserted Stavka: {}", narudzbenica.getStavke().get(brojac).getRedni_broj());
+            } else {
+                logger.error("Stavka can not be inserted.");
+                return false;
+            }
+            brojac++;
+        }
+
+        return true;
     }
 
     @Override
@@ -58,7 +119,107 @@ public class NarudzbenicaRepository implements AbstractRepository<Narudzbenica, 
 
     @Override
     public Boolean update(Narudzbenica narudzbenica, Long aLong) {
-        return null;
+
+        logger.info("Updating Narudzbenica...");
+        String sql = "update narudzbenica set sifra=?, datum=?, napomena=? where sifra=?";
+        int updated = jdbcTemplate.update(
+                sql,
+                narudzbenica.getSifra(),
+                narudzbenica.getDatum(),
+                narudzbenica.getNapomena(),
+                aLong);
+        if (updated == 1) {
+            logger.info("Updated Narudzbenica: {}", narudzbenica.getSifra());
+        } else {
+            logger.error("Narudzbenica can not be updated.");
+        }
+
+        System.out.println(listaZaBrisanje);
+
+        Map<String, List<StavkaNarudzbenice>> infos = new HashMap<>();
+        List<StavkaNarudzbenice> listaDodaj = new ArrayList<>();
+        List<StavkaNarudzbenice> listaIzmeni = new ArrayList<>();
+
+        for (int i = 0; i < narudzbenica.getStavke().size(); i++) {
+
+            StavkaNarudzbenice stavkaNarudzbenice1 = vratiStavku(narudzbenica.getStavke().get(i).getRedni_broj(),
+                    narudzbenica.getSifra());
+
+            if (stavkaNarudzbenice1 == null) {
+                listaDodaj.add(narudzbenica.getStavke().get(i));
+                infos.put("dodaj", listaDodaj);
+            } else {
+                listaIzmeni.add(narudzbenica.getStavke().get(i));
+                infos.put("izmeni", listaIzmeni);
+            }
+        }
+        int run = 0;
+        while (run < infos.size()) {
+            List<StavkaNarudzbenice> stavkeNarudzbenice = infos.get("izmeni");
+            logger.info("Stavke za izmeni: {}", stavkeNarudzbenice);
+
+            String stavkaSql = "UPDATE stavka_narudzbenice SET kolicina=?, jm=?, materijal=? WHERE redni_broj=? AND narudzbenica=?";
+            logger.info("Updating Stavka Narudzbenice...");
+
+            int brojac = 0;
+            while (stavkeNarudzbenice != null && brojac < stavkeNarudzbenice.size()) {
+                logger.info("Updating stavka narudzbenice...");
+                int uspesno = jdbcTemplate.update(stavkaSql,
+                        stavkeNarudzbenice.get(brojac).getKolicina(),
+                        stavkeNarudzbenice.get(brojac).getJm(),
+                        Long.valueOf(stavkeNarudzbenice.get(brojac).getMaterijal().getSifra()),
+                        stavkeNarudzbenice.get(brojac).getRedni_broj(), aLong);
+                if (uspesno == 1) {
+                    logger.info("Updated Stavka: {}", stavkeNarudzbenice.get(brojac).getRedni_broj());
+                } else {
+                    logger.error("Stavka can not be updated.");
+                    return false;
+                }
+                brojac++;
+                run++;
+            }
+
+            List<StavkaNarudzbenice> stavkeNarudzbeniceInsert = infos.get("dodaj");
+            logger.info("Stavke za dodaj: {}", stavkeNarudzbeniceInsert);
+
+            String insertStavkaSql = "INSERT INTO stavka_narudzbenice(redni_broj, narudzbenica, kolicina, jm, materijal) VALUES (?, ?, ?, ?, ?)";
+            brojac = 0;
+            while (stavkeNarudzbeniceInsert != null && brojac < stavkeNarudzbeniceInsert.size()) {
+                logger.info("Inserting stavka narudzbenice...");
+
+                int uspesno = jdbcTemplate.update(insertStavkaSql,
+                        stavkeNarudzbeniceInsert.get(brojac).getRedni_broj(),
+                        narudzbenica.getSifra(),
+                        stavkeNarudzbeniceInsert.get(brojac).getKolicina(),
+                        stavkeNarudzbeniceInsert.get(brojac).getJm(),
+                        Long.valueOf(stavkeNarudzbeniceInsert.get(brojac).getMaterijal().getSifra()));
+                if (uspesno == 1) {
+                    logger.info("Inserted Stavka: {}", stavkeNarudzbeniceInsert.get(brojac).getRedni_broj());
+                } else {
+                    logger.error("Stavka can not be inserted.");
+                    return false;
+                }
+                brojac++;
+                run++;
+            }
+        }
+
+        for(int i = 0; i < listaZaBrisanje.size(); i++) {
+            logger.info("Deleting stavka narudzbenice...");
+            String brisanjeSql = "delete from stavka_narudzbenice where redni_broj=? and narudzbenica=?";
+            int deleted = jdbcTemplate.update(
+                    brisanjeSql,
+                    listaZaBrisanje.get(i).getRbr(),
+                    listaZaBrisanje.get(i).getSifraNar());
+            if (deleted == 1) {
+                logger.info("Deleted stavka narudzbenice with RBR: {} and sifra narudzbenice: {}",
+                        listaZaBrisanje.get(i).getRbr(),
+                        listaZaBrisanje.get(i).getSifraNar());
+            } else {
+                logger.error("stavka narudzbenice can not be deleted.");
+            }
+        }
+        return true;
     }
 
     RowMapper<Dobavljac> rowMapperDobavljac = (rs, rowNum) -> {
@@ -143,7 +304,7 @@ public class NarudzbenicaRepository implements AbstractRepository<Narudzbenica, 
 
     RowMapper<StavkaNarudzbenice> rowMapperStavke = (rs, rowNum) -> {
         StavkaNarudzbenice stavkaNarudzbenice = new StavkaNarudzbenice();
-        stavkaNarudzbenice.setRedniBroj(rs.getLong("redni_broj"));
+        stavkaNarudzbenice.setRedni_broj(rs.getLong("redni_broj"));
         stavkaNarudzbenice.setJm(rs.getString("jm"));
         stavkaNarudzbenice.setKolicina(rs.getInt("kolicina"));
 
@@ -156,9 +317,42 @@ public class NarudzbenicaRepository implements AbstractRepository<Narudzbenica, 
         return stavkaNarudzbenice;
     };
 
-    public List<StavkaNarudzbenice> vratiStavke() {
+    public List<StavkaNarudzbenice> vratiStavke(Long id) {
         logger.info("Getting stavke...");
-        String sql = "select * from stavka_narudzbenice order by redni_broj";
-        return jdbcTemplate.query(sql, rowMapperStavke);
+        String sql = "select * from stavka_narudzbenice where narudzbenica = ? order by redni_broj";
+        return jdbcTemplate.query(sql, rowMapperStavke, new Object[]{id});
+    }
+
+    public StavkaNarudzbenice vratiStavku(Long rbr, Long sifraNar) {
+        logger.info("Getting stavka...");
+        String sql = "select * from stavka_narudzbenice where redni_broj=? and narudzbenica=?";
+        StavkaNarudzbenice stavkaNarudzbenice;
+        try {
+            stavkaNarudzbenice = jdbcTemplate.queryForObject(sql, rowMapperStavke, new Object[]{rbr, sifraNar});
+            logger.info("Stavka: {}", stavkaNarudzbenice);
+        } catch (DataAccessException ex) {
+            logger.error("Stavka with rbr: {} not found.", rbr);
+            return null;
+        }
+
+        return stavkaNarudzbenice;
+    }
+
+    RowMapper<Long> rowMapperMax = (rs, rowNum) -> {
+        Long max = rs.getLong("max");
+        return max;
+    };
+
+    public List<Long> maxSifra() {
+        logger.info("Getting maksimalnu sifru...");
+        String sql = "select max(sifra) from narudzbenica";
+        return jdbcTemplate.query(sql, rowMapperMax);
+    }
+
+    public void obrisiStavku(ArrayList<Long> rbr, Long sifra) {
+        listaZaBrisanje = new ArrayList<>();
+        for (Long rb: rbr) {
+            listaZaBrisanje.add(new Brisanje(rb, sifra));
+        }
     }
 }
