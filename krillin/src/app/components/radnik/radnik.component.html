@@ -6,19 +6,18 @@
             <div class="radnik">
                 <div>
                     <input type="number" class="form-control" id="exampleInputEmail1" autocomplete="off" ngModel
-                    name="sifra" [(ngModel)]="sifra" aria-describedby="emailHelp" required
-                    placeholder="Šifru unosite samo ako pretražujete">
+                        name="sifra" [(ngModel)]="sifra" aria-describedby="emailHelp" required
+                        placeholder="Šifru unosite samo ako pretražujete">
                 </div>
-                <div>
-                    <button class="btn btn-warning" (click)="get(registerForm.value.sifra)">Pronađi</button>
-                    <button class="btn btn-success" *ngIf="pronadjiClicked" (click)="ocisti()">Odustani</button>
-                </div>
+                <button class="btn btn-warning" (click)="get(registerForm.value.sifra)">Pronađi</button>
+                <button class="btn btn-success" *ngIf="pronadjiClicked" (click)="ocisti()">Odustani</button>
             </div>
         </div>
         <div class="mb-3">
             <label for="exampleInputEmail1" class="form-label">JMBG</label>
             <input type="text" class="form-control" id="exampleInputEmail1" autocomplete="off" ngModel name="jmbg"
-                [(ngModel)]="jmbg" aria-describedby="emailHelp" required minlength="13" maxlength="13" placeholder="Unesite JMBG">
+                [(ngModel)]="jmbg" aria-describedby="emailHelp" required minlength="13" maxlength="13"
+                placeholder="Unesite JMBG">
             <div id="emailHelp" class="form-text">Nikada nećemo deliti Vaš JMBG.</div>
         </div>
         <div class="mb-3">

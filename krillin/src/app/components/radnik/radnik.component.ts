@@ -59,23 +59,27 @@ export class RadnikComponent implements OnInit {
   }
 
   get(id: string) {
-    this.pronadjiClicked = true;
+    if (!this.sifra) {
+      this.openDialog(true, 'Greška!', 'Unesite šifru radnika!');
+    } else {
+      this.pronadjiClicked = true;
+      this.service.get(id).subscribe(res => {
+        if (res == null) {
+          this.ocisti();
+          this.openDialog(true, 'Greška!', 'Radnik sa tom šifrom ne postoji!');
+        } else {
+          this.radnik = res;
+          this.radnik.datum_zaposlenja = formatDate(
+            new Date(this.radnik.datum_zaposlenja),
+            "yyyy-MM-ddTHH:mm:ss", "en-US");
+          this.popuniFormu(this.radnik.sifra,
+            this.radnik.jmbg, this.radnik.ime_prezime,
+            this.radnik.koeficijent, this.radnik.pozicija,
+            this.radnik.status, this.radnik.datum_zaposlenja);
+        }
+      })
+    }
 
-    this.service.get(id).subscribe(res => {
-      if (res == null) {
-        this.ocisti();
-        this.openDialog(true, 'Greška!', 'Radnik sa tom šifrom ne postoji!');
-      } else {
-        this.radnik = res;
-        this.radnik.datum_zaposlenja = formatDate(
-          new Date(this.radnik.datum_zaposlenja),
-          "yyyy-MM-ddTHH:mm:ss", "en-US");
-        this.popuniFormu(this.radnik.sifra,
-          this.radnik.jmbg, this.radnik.ime_prezime,
-          this.radnik.koeficijent, this.radnik.pozicija,
-          this.radnik.status, this.radnik.datum_zaposlenja);
-      }
-    })
   }
 
   insert(registerForm: NgForm) {

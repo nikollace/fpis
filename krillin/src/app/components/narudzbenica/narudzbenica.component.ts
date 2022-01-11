@@ -19,7 +19,7 @@ export class NarudzbenicaComponent {
   narudzbenica: any;
 
   clicked = false;
-  novaClicked = false;
+  novaClicked = true;
   otkazi2 = false;
 
   //podaci na formi
@@ -65,7 +65,7 @@ export class NarudzbenicaComponent {
     this.nazivDobavljaca = null;
     this.datum = null;
 
-    this.novaClicked = false;
+    // this.novaClicked = false;
     this.otkazi2 = false;
   }
 
@@ -102,6 +102,7 @@ export class NarudzbenicaComponent {
       },
         error => {
           this.openDialog(true, 'Greška!', 'Narudžbenica sa unetom šifrom ne postoji!')
+          this.ocisti()
         });
 
       this.selectedRowIds = new Set<number>();
@@ -110,9 +111,7 @@ export class NarudzbenicaComponent {
   }
 
   getMaxSifra() {
-
-    this.clicked = false;
-    this.novaClicked = true;
+    
     this.service.getMaxSifra().subscribe(res => {
       let max = Object.entries(res)[0];
       this.ocisti();
@@ -120,15 +119,16 @@ export class NarudzbenicaComponent {
 
       this.stavke = [];
       this.clicked = true;
+      // this.clicked = false;
+      this.novaClicked = true;
     });
 
     this.selectedRowIds = new Set<number>();
-
   }
 
   sacuvajNarudzbenicu() {
     this.confirmDialog();
-
+    console.log(this.novaClicked)
     this.dialogRef.afterClosed().subscribe((res: any) => {
       if (res) {
         //brisanje odabranih stavki

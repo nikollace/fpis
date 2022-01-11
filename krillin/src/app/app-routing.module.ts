@@ -7,11 +7,11 @@ import { NarudzbenicaComponent } from './components/narudzbenica/narudzbenica.co
 import { RadnikComponent } from './components/radnik/radnik.component';
 
 const routes: Routes = [
-  { path: '', redirectTo: 'home', pathMatch: 'full' },
-  { path: 'login', component: LoginComponent, canActivate: [AuthGuard] },
-  { path: 'home', component: HomeComponent, canActivate: [AuthGuard] },
-  { path: 'radnik', component: RadnikComponent, canActivate: [AuthGuard] },
-  { path: 'narudzbenica', component: NarudzbenicaComponent, canActivate: [AuthGuard] },
+  { path: '', redirectTo: 'login', pathMatch: 'full' },
+  { path: 'login', component: LoginComponent },
+  { path: 'home', component: HomeComponent },
+  { path: 'radnik', component: RadnikComponent},
+  { path: 'narudzbenica', component: NarudzbenicaComponent },
 ];
 
 @NgModule({
