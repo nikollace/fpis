@@ -15,7 +15,7 @@ export class StavkaComponent implements OnInit {
   @Input() stavke: any;
   @Input() sifra: any;
   @Output() stavkeChange = new EventEmitter();
-
+  
   kolicina: number = 1;
   jm: string = '';
   materijal: Materijal = new Materijal(-1, '');

@@ -49,6 +49,7 @@ import { GoogleLoginProvider } from 'angularx-social-login';
     SocialLoginModule,
   ],
   providers: [
+    NavbarComponent,
     {
       provide: 'SocialAuthServiceConfig',
       useValue: {

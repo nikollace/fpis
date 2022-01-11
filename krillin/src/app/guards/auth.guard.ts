@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { UserService } from 'src/app/services/user.service';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { take, map } from 'rxjs/operators';
+import { NavbarComponent } from '../components/navbar/navbar.component';
 
 const TOKEN_KEY = 'jwt-token';
 const helper = new JwtHelperService();
@@ -13,14 +14,14 @@ const helper = new JwtHelperService();
 })
 export class AuthGuard implements CanActivate {
 
-  user: any;
+  korisnik: any;
   loggedIn: any;
 
   constructor(private auth: UserService, private router: Router) {
     try {
       let token = helper.decodeToken(JSON.stringify(localStorage.getItem(TOKEN_KEY)));
-      this.user = token;
-      this.loggedIn = (this.user != null);
+      this.korisnik = token;
+      this.loggedIn = (this.korisnik != null);
     } catch (e) {
       // handle the error, for eg.: 
     }
@@ -30,7 +31,7 @@ export class AuthGuard implements CanActivate {
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
 
-    if (!this.user) {
+    if (!this.korisnik) {
       if (state.url !== '/login') {
         this.router.navigate(['/login']);
         return false;

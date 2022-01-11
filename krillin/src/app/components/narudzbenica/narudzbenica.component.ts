@@ -89,27 +89,30 @@ export class NarudzbenicaComponent {
 
     this.clicked = true;
     this.novaClicked = false;
+    if (!this.sifra) {
+      this.openDialog(true, 'Greška!', 'Unesite šifru!')
+    } else {
+      this.service.getNarudzbenica(id).subscribe(res => {
+        this.narudzbenica = res;
+        this.napomena = this.narudzbenica.napomena;
+        this.datum = formatDate(new Date(this.narudzbenica.datum), "yyyy-MM-ddTHH:mm:ss", "en-US");
+        console.log(this.narudzbenica)
+        // dohvati stavke narudzbenice
+        this.getStavke(id);
+      },
+        error => {
+          this.openDialog(true, 'Greška!', 'Narudžbenica sa unetom šifrom ne postoji!')
+        });
 
-    this.service.getNarudzbenica(id).subscribe(res => {
-      this.narudzbenica = res;
-      this.napomena = this.narudzbenica.napomena;
-      this.datum = formatDate(new Date(this.narudzbenica.datum), "yyyy-MM-ddTHH:mm:ss", "en-US");
-      console.log(this.narudzbenica)
-      // dohvati stavke narudzbenice
-      this.getStavke(id);
-    },
-      error => {
-        this.openDialog(true, 'Greška!', 'Narudžbenica sa unetom šifrom ne postoji!')
-      });
+      this.selectedRowIds = new Set<number>();
+    }
 
-    this.selectedRowIds = new Set<number>();
   }
 
   getMaxSifra() {
 
     this.clicked = false;
     this.novaClicked = true;
-
     this.service.getMaxSifra().subscribe(res => {
       let max = Object.entries(res)[0];
       this.ocisti();
@@ -120,6 +123,7 @@ export class NarudzbenicaComponent {
     });
 
     this.selectedRowIds = new Set<number>();
+
   }
 
   sacuvajNarudzbenicu() {
