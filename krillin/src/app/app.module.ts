@@ -34,7 +34,7 @@ import { GoogleLoginProvider } from 'angularx-social-login';
     ModalComponent,
     StavkaComponent,
     DialogComponent,
-    LoginComponent
+    LoginComponent,
   ],
   imports: [
     BrowserModule,

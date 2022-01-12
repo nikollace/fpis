@@ -3,7 +3,6 @@ import { NarudzbenicaService } from 'src/app/services/narudzbenica.service';
 import { EventEmitter } from '@angular/core';
 import { StavkaNarudzbeniceRequest } from 'src/app/model/stavka_narudzbenice';
 import { Materijal } from 'src/app/model/materijal';
-import { Narudzbenica } from 'src/app/model/narudzbenica';
 
 @Component({
   selector: 'app-stavka',

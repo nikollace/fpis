@@ -27,7 +27,7 @@ body, html {
       <a class="w3-bar-item w3-button"><img class="img_" src="{{korisnik?.picture}}"> {{korisnik?.sub}}</a>
       <a routerLink="radnik" class="w3-bar-item w3-button"><i class="fa fa-user"></i> Radnik</a>
       <a routerLink="narudzbenica" class="w3-bar-item w3-button"><i class="fa fa-book"></i> Narudžbenica</a>
-      <a routerLink="login" *ngIf="korisnik" class="w3-bar-item w3-button" (click)="signOut()"><i class="fa fa-sign-out"></i> Odjava</a>
+      <a [routerLink]="['/login']" *ngIf="korisnik" class="w3-bar-item w3-button" (click)="signOut()"><i class="fa fa-sign-out"></i> Odjava</a>
     </div>
   </div>
 </div>

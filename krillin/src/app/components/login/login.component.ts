@@ -11,12 +11,13 @@ import { UserService } from 'src/app/services/user.service';
 })
 export class LoginComponent implements OnInit {
 
-  constructor(private authService: SocialAuthService) { }
+  constructor(private authService: SocialAuthService, private auth: UserService) { }
 
   ngOnInit(): void {
   }
 
   signInWithGoogle(): void {
+    this.auth.loggedIn = true;
     this.authService.signIn(GoogleLoginProvider.PROVIDER_ID);
   }
 }

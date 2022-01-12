@@ -11,10 +11,21 @@ const helper = new JwtHelperService();
 })
 export class AuthGuard implements CanActivate {
 
-  constructor(private auth: UserService, private router: Router) {}
+  constructor(private auth: UserService, private router: Router) { }
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
-    return true;
+    if (!this.auth.loggedIn) {
+      if (state.url !== '/login') {
+        this.router.navigate(['/login']);
+        return false;
+      }
+      return true;
+    } else {
+      if (state.url === '/login') {
+        this.router.navigate(['/home']);
+      }
+      return true;
+    }
   }
 
 }

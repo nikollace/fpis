@@ -14,14 +14,11 @@ const helper = new JwtHelperService();
 })
 export class NavbarComponent implements OnInit {
 
-  public user = new Subject();
-
   korisnik: any;
 
   constructor(private auth: UserService) {
     try {
       let token = helper.decodeToken(JSON.stringify(localStorage.getItem(TOKEN_KEY)));
-      this.user = token;
       this.korisnik = token;
     } catch (e) {
       // handle the error, for eg.: 
@@ -30,6 +27,7 @@ export class NavbarComponent implements OnInit {
   }
 
   ngOnInit(): void {
+
   }
 
   signOut(): void {

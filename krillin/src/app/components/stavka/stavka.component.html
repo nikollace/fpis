@@ -1,8 +1,11 @@
 <div class="d-flex container flex-row justify-content-between mt-3">
-  <h2>Stavke narudžbenice</h2>
+  <h2 *ngIf="stavke?.length; else elseBlock">Stavke narudžbenice</h2>
+  <ng-template #elseBlock>
+    <h2>Trenutno nema stavki</h2>
+  </ng-template>
   <button class="btn btn-success" (click)="dodaj()">Dodaj <i class="fa fa-plus"></i></button>
 </div>
-<table class="table">
+<table class="table" *ngIf="stavke?.length">
   <thead>
     <tr>
       <th scope="col">RBR</th>
