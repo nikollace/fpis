@@ -11,8 +11,8 @@ public class StavkaNarudzbeniceDto {
     @JsonProperty("redni_broj")
     private Long redniBroj;
 
-    @JsonProperty("narudzbenica")
-    private Narudzbenica narudzbenica;
+    @JsonProperty("narudzbenica_sifra")
+    private Long sifraNarudzbenice;
 
     @JsonProperty("kolicina")
     private Integer kolicina;
@@ -26,9 +26,9 @@ public class StavkaNarudzbeniceDto {
     public StavkaNarudzbeniceDto() {
     }
 
-    public StavkaNarudzbeniceDto(Long redniBroj, Narudzbenica narudzbenica, Integer kolicina, String jm, Materijal materijal) {
+    public StavkaNarudzbeniceDto(Long redniBroj, Long sifraNarudzbenice, Integer kolicina, String jm, Materijal materijal) {
         this.redniBroj = redniBroj;
-        this.narudzbenica = narudzbenica;
+        this.sifraNarudzbenice = sifraNarudzbenice;
         this.kolicina = kolicina;
         this.jm = jm;
         this.materijal = materijal;
@@ -40,14 +40,6 @@ public class StavkaNarudzbeniceDto {
 
     public void setRedniBroj(Long redniBroj) {
         this.redniBroj = redniBroj;
-    }
-
-    public Narudzbenica getNarudzbenica() {
-        return narudzbenica;
-    }
-
-    public void setNarudzbenica(Narudzbenica narudzbenica) {
-        this.narudzbenica = narudzbenica;
     }
 
     public Integer getKolicina() {
@@ -74,24 +66,32 @@ public class StavkaNarudzbeniceDto {
         this.materijal = materijal;
     }
 
+    public Long getSifraNarudzbenice() {
+        return sifraNarudzbenice;
+    }
+
+    public void setSifraNarudzbenice(Long sifraNarudzbenice) {
+        this.sifraNarudzbenice = sifraNarudzbenice;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         StavkaNarudzbeniceDto that = (StavkaNarudzbeniceDto) o;
-        return Objects.equals(redniBroj, that.redniBroj) && Objects.equals(narudzbenica, that.narudzbenica) && Objects.equals(kolicina, that.kolicina) && Objects.equals(jm, that.jm) && Objects.equals(materijal, that.materijal);
+        return Objects.equals(redniBroj, that.redniBroj) && Objects.equals(sifraNarudzbenice, that.sifraNarudzbenice) && Objects.equals(kolicina, that.kolicina) && Objects.equals(jm, that.jm) && Objects.equals(materijal, that.materijal);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(redniBroj, narudzbenica, kolicina, jm, materijal);
+        return Objects.hash(redniBroj, sifraNarudzbenice, kolicina, jm, materijal);
     }
 
     @Override
     public String toString() {
         return "StavkaNarudzbeniceDto{" +
                 "redniBroj=" + redniBroj +
-                ", narudzbenica=" + narudzbenica +
+                ", sifraNarudzbenice=" + sifraNarudzbenice +
                 ", kolicina=" + kolicina +
                 ", jm='" + jm + '\'' +
                 ", materijal=" + materijal +

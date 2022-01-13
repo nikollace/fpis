@@ -24,18 +24,18 @@ public class RadnikController {
     }
 
     @PostMapping
-    public Boolean insert(@RequestBody RadnikDto radnikDto) {
+    public Integer insert(@RequestBody RadnikDto radnikDto) {
         logger.info("Inserting radnik...");
-        Boolean insert = radnikService.insert(radnikDto);
-        logger.info("Radnik inserted.");
+        Integer insert = radnikService.insert(radnikDto);
+        logger.info("Radnik inserted: {}", insert);
         return insert;
     }
 
     @PatchMapping("/{id}")
-    public Boolean update(@PathVariable Long id, @RequestBody RadnikDto radnikDto) {
+    public Integer update(@PathVariable Long id, @RequestBody RadnikDto radnikDto) {
         logger.info("Updating radnik...");
-        Boolean update = radnikService.update(id, radnikDto);
-        logger.info("Radnik updated.");
+        Integer update = radnikService.update(id, radnikDto);
+        logger.info("Radnik updated: {}", update);
         return update;
     }
 

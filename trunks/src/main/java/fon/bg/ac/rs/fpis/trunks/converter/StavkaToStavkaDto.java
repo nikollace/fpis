@@ -8,6 +8,6 @@ public class StavkaToStavkaDto implements Converter<StavkaNarudzbenice, StavkaNa
 
     @Override
     public StavkaNarudzbeniceDto convert(StavkaNarudzbenice source) {
-        return new StavkaNarudzbeniceDto(source.getRedni_broj(), source.getNarudzbenica(), source.getKolicina(), source.getJm(), source.getMaterijal());
+        return new StavkaNarudzbeniceDto(source.getRedni_broj(), source.getNarudzbenica().getSifra(), source.getKolicina(), source.getJm(), source.getMaterijal());
     }
 }

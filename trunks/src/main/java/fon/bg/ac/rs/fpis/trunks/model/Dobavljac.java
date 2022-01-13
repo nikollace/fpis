@@ -1,12 +1,24 @@
 package fon.bg.ac.rs.fpis.trunks.model;
 
+import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Objects;
 
-public class Dobavljac {
+@Entity
+@Table(name = "dobavljac")
+public class Dobavljac implements Serializable {
 
     private String naziv;
+    @Id
     private String pib;
     private String telefon;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumns(value = {
+            @JoinColumn(name = "ulica", referencedColumnName = "ulica"),
+            @JoinColumn(name = "broj", referencedColumnName = "broj"),
+            @JoinColumn(name = "grad", referencedColumnName = "grad")
+    })
     private AdresaDobavljaca adresaDobavljaca;
 
     public Dobavljac() {

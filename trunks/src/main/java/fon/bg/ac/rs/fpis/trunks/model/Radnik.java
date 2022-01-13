@@ -1,16 +1,26 @@
 package fon.bg.ac.rs.fpis.trunks.model;
 
+import javax.persistence.*;
+import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.Objects;
 
-public class Radnik {
+@Entity
+@Table(name = "radnik")
+public class Radnik implements Serializable {
 
+    @Id
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Long sifra;
     private String jmbg;
+    @Column(name = "ime_prezime")
     private String imePrezime;
     private Double koeficijent;
+    @Enumerated(EnumType.STRING)
     private Pozicija pozicija;
+    @Enumerated(EnumType.STRING)
     private Status status;
+    @Column(name = "datum_zaposlenja")
     private Timestamp datumZaposlenja;
 
     public Radnik() {

@@ -5,3 +5,12 @@ spring:
     url: jdbc:postgresql://localhost:5432/krillin
     username: user
     password: pwd123
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+apis:
+  google-api-url: ${google-api}

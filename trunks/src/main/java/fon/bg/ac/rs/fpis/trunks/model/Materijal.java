@@ -1,9 +1,15 @@
 package fon.bg.ac.rs.fpis.trunks.model;
 
+import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Objects;
 
-public class Materijal {
+@Entity
+@Table(name = "materijal")
+public class Materijal implements Serializable {
 
+    @Id
+    @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Long sifra;
     private String naziv;
 

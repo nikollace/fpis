@@ -1,18 +1,38 @@
 package fon.bg.ac.rs.fpis.trunks.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
+
+import javax.persistence.*;
+import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.List;
 import java.util.Objects;
 
-public class Narudzbenica {
+@Entity
+@Table(name = "narudzbenica")
+public class Narudzbenica implements Serializable {
 
+    @Id
     private Long sifra;
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "dobavljac", referencedColumnName = "pib")
     private Dobavljac dobavljac;
     private Timestamp datum;
     private String napomena;
+
+    @OneToMany(mappedBy = "narudzbenica", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @Fetch(value = FetchMode.SUBSELECT)
+    @JsonIgnore
     private List<StavkaNarudzbenice> stavke;
 
     public Narudzbenica() {
+    }
+
+    public Narudzbenica(Long sifra) {
+        this.sifra = sifra;
     }
 
     public Narudzbenica(Long sifra, Dobavljac dobavljac, Timestamp datum, String napomena) {

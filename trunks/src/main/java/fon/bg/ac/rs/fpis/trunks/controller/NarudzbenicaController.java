@@ -49,7 +49,7 @@ public class NarudzbenicaController {
     public NarudzbenicaDto vratiNarudzbenicu(@PathVariable Long sifra) {
         logger.info("Getting narudzbenica...");
         Narudzbenica narudzbenica = narudzbenicaService.vratiNarudzbenicu(sifra);
-        logger.info("Narudzbenica: {}", narudzbenica);
+//        logger.info("Narudzbenica: {}", narudzbenica);
         return conversionService.convert(narudzbenica, NarudzbenicaDto.class);
     }
 
@@ -58,13 +58,6 @@ public class NarudzbenicaController {
         logger.info("Getting materijali...");
         List<Materijal> materijali = narudzbenicaService.vratiMaterijale();
         return materijali.stream().map(m -> conversionService.convert(m, MaterijalDto.class)).collect(Collectors.toList());
-    }
-
-    @GetMapping("/stavka/{id}")
-    public List<StavkaNarudzbeniceDto> vratiStavke(@PathVariable Long id) {
-        logger.info("Getting stavke narudzbenice...");
-        List<StavkaNarudzbenice> stavke = narudzbenicaService.vratiStavke(id);
-        return stavke.stream().map(s -> conversionService.convert(s, StavkaNarudzbeniceDto.class)).collect(Collectors.toList());
     }
 
     @GetMapping("/max")

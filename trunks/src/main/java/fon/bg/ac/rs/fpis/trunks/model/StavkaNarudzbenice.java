@@ -1,21 +1,35 @@
 package fon.bg.ac.rs.fpis.trunks.model;
 
+import fon.bg.ac.rs.fpis.trunks.repository.NarudzbenicaJPA;
+
+import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Objects;
 
-public class StavkaNarudzbenice {
+@Entity
+@Table(name = "stavka_narudzbenice")
+@IdClass(StavkaID.class)
+public class StavkaNarudzbenice implements Serializable {
 
-    private Long redni_broj;
+    @Id
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "narudzbenica_sifra", referencedColumnName = "sifra")
     private Narudzbenica narudzbenica;
+
+    @Id
+    private Long redni_broj;
     private Integer kolicina;
     private String jm;
+    @OneToOne
+    @JoinColumn(name = "materijal", referencedColumnName = "sifra")
     private Materijal materijal;
 
     public StavkaNarudzbenice() {
     }
 
-    public StavkaNarudzbenice(Long redniBroj, Narudzbenica narudzbenica, Integer kolicina, String jm, Materijal materijal) {
-        this.redni_broj = redniBroj;
+    public StavkaNarudzbenice(Narudzbenica narudzbenica, Long redni_broj, Integer kolicina, String jm, Materijal materijal) {
         this.narudzbenica = narudzbenica;
+        this.redni_broj = redni_broj;
         this.kolicina = kolicina;
         this.jm = jm;
         this.materijal = materijal;
@@ -27,14 +41,6 @@ public class StavkaNarudzbenice {
 
     public void setRedni_broj(Long redni_broj) {
         this.redni_broj = redni_broj;
-    }
-
-    public Narudzbenica getNarudzbenica() {
-        return narudzbenica;
-    }
-
-    public void setNarudzbenica(Narudzbenica narudzbenica) {
-        this.narudzbenica = narudzbenica;
     }
 
     public Integer getKolicina() {
@@ -61,24 +67,32 @@ public class StavkaNarudzbenice {
         this.materijal = materijal;
     }
 
+    public Narudzbenica getNarudzbenica() {
+        return narudzbenica;
+    }
+
+    public void setNarudzbenica(Narudzbenica narudzbenica) {
+        this.narudzbenica = narudzbenica;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         StavkaNarudzbenice that = (StavkaNarudzbenice) o;
-        return Objects.equals(redni_broj, that.redni_broj) && Objects.equals(narudzbenica, that.narudzbenica) && Objects.equals(kolicina, that.kolicina) && Objects.equals(jm, that.jm) && Objects.equals(materijal, that.materijal);
+        return Objects.equals(narudzbenica, that.narudzbenica) && Objects.equals(redni_broj, that.redni_broj) && Objects.equals(kolicina, that.kolicina) && Objects.equals(jm, that.jm) && Objects.equals(materijal, that.materijal);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(redni_broj, narudzbenica, kolicina, jm, materijal);
+        return Objects.hash(narudzbenica, redni_broj, kolicina, jm, materijal);
     }
 
     @Override
     public String toString() {
         return "StavkaNarudzbenice{" +
-                "redniBroj=" + redni_broj +
-                ", narudzbenica=" + narudzbenica +
+                "narudzbenica=" + narudzbenica +
+                ", redni_broj=" + redni_broj +
                 ", kolicina=" + kolicina +
                 ", jm='" + jm + '\'' +
                 ", materijal=" + materijal +

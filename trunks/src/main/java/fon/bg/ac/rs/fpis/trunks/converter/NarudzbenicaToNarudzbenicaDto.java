@@ -8,6 +8,6 @@ public class NarudzbenicaToNarudzbenicaDto implements Converter<Narudzbenica, Na
 
     @Override
     public NarudzbenicaDto convert(Narudzbenica source) {
-        return new NarudzbenicaDto(source.getSifra(), source.getDobavljac(), source.getDatum(), source.getNapomena());
+        return new NarudzbenicaDto(source.getSifra(), source.getDobavljac(), source.getDatum(), source.getNapomena(), source.getStavke());
     }
 }

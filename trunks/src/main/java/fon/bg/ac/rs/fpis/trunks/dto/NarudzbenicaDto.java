@@ -2,6 +2,7 @@ package fon.bg.ac.rs.fpis.trunks.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import fon.bg.ac.rs.fpis.trunks.model.Dobavljac;
+import fon.bg.ac.rs.fpis.trunks.model.Narudzbenica;
 import fon.bg.ac.rs.fpis.trunks.model.StavkaNarudzbenice;
 
 import java.sql.Timestamp;
