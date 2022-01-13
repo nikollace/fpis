@@ -69,16 +69,10 @@ export class NarudzbenicaComponent {
     this.otkazi2 = false;
   }
 
-  getStavke(id: number) {
-    this.service.getStavke(id).subscribe(res => {
-      this.stavke = res;
-      console.log(this.stavke)
-    });
-  }
-
   getDobavljac(pib: string) {
     this.service.getDobavljac(pib).subscribe(res => {
       this.dobavljac = res;
+      console.log(this.dobavljac)
       this.nazivDobavljaca = this.dobavljac.naziv;
     }, error => {
       this.openDialog(true, 'Greška!', 'Dobavljač sa unetim pib-om ne postoji!')
@@ -96,9 +90,10 @@ export class NarudzbenicaComponent {
         this.narudzbenica = res;
         this.napomena = this.narudzbenica.napomena;
         this.datum = formatDate(new Date(this.narudzbenica.datum), "yyyy-MM-ddTHH:mm:ss", "en-US");
-        console.log(this.narudzbenica)
+        console.log('naruzbenica vracena', this.narudzbenica)
         // dohvati stavke narudzbenice
-        this.getStavke(id);
+        this.stavke = this.narudzbenica.stavke;
+        console.log('stavke', this.stavke)
       },
         error => {
           this.openDialog(true, 'Greška!', 'Narudžbenica sa unetom šifrom ne postoji!')
@@ -128,7 +123,7 @@ export class NarudzbenicaComponent {
 
   sacuvajNarudzbenicu() {
     this.confirmDialog();
-    console.log(this.novaClicked)
+    console.log('za brisanje', this.selectedRowIds)
     this.dialogRef.afterClosed().subscribe((res: any) => {
       if (res) {
         //brisanje odabranih stavki
@@ -137,6 +132,7 @@ export class NarudzbenicaComponent {
 
         if (this.novaClicked) {
           const narudzbenica = new Narudzbenica(this.sifra, this.dobavljac, this.datum, this.napomena, this.stavke);
+          console.log('for inserting', narudzbenica)
           this.service.saveNarudzbenica(narudzbenica).subscribe(res => {
             this.openDialog(false, 'Uspešno!', 'Uspešno ste dodali narudžbenicu!');
             this.ocisti();
@@ -145,6 +141,7 @@ export class NarudzbenicaComponent {
           });
         } else {
           const narudzbenica = new Narudzbenica(this.sifra, this.dobavljac, this.datum, this.napomena, this.stavke);
+          console.log('for updating', narudzbenica)
           this.service.updateNarudzbenica(narudzbenica).subscribe(res => {
             this.openDialog(false, 'Uspešno!', 'Uspešno ste izmenili narudžbenicu!');
             this.ocisti();

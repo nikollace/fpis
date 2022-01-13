@@ -1,8 +1,9 @@
 import { Component, Input, OnInit, Output } from '@angular/core';
 import { NarudzbenicaService } from 'src/app/services/narudzbenica.service';
 import { EventEmitter } from '@angular/core';
-import { StavkaNarudzbeniceRequest } from 'src/app/model/stavka_narudzbenice';
+import { StavkaNarudzbenice } from 'src/app/model/stavka_narudzbenice';
 import { Materijal } from 'src/app/model/materijal';
+import { StavkaNarudzbeniceTable } from 'src/app/model/sntabel';
 
 @Component({
   selector: 'app-stavka',
@@ -27,17 +28,26 @@ export class StavkaComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    if (this.stavke)
-      this.stavke.push(new StavkaNarudzbeniceRequest(1, this.kolicina, this.jm, this.materijal))
+    if (this.stavke) {
+      this.stavke.push(new StavkaNarudzbeniceTable(this.sifra, 1, this.kolicina, this.jm, this.materijal, true))
+      console.log("prosledjene stavke", this.stavke)
+    }
   }
 
   dodaj() {
+    let max = 1;
     if (this.stavke.length != 0) {
-      this.stavke.push(new StavkaNarudzbeniceRequest(
-        this.stavke[this.stavke.length - 1].redni_broj + 1,
-        this.kolicina, this.jm, new Materijal(-1, '')))
+      this.stavke.forEach((element:any) => {
+        if(element.redni_broj > max) {
+          max = element.redni_broj;
+        }
+      });
+      this.stavke.push(new StavkaNarudzbeniceTable(
+        this.sifra,
+        max + 1,
+        this.kolicina, this.jm, new Materijal(-1, ''), true))
     } else {
-      this.stavke.push(new StavkaNarudzbeniceRequest(1, this.kolicina, this.jm, new Materijal(-1, '')))
+      this.stavke.push(new StavkaNarudzbeniceTable(this.sifra, 1, this.kolicina, this.jm, new Materijal(-1, ''), true))
     }
   }
 
@@ -49,7 +59,7 @@ export class StavkaComponent implements OnInit {
   obrisi(id: number) {
 
     const stavkica = this.stavke.find((stavka: any) => stavka.redni_broj == id);
-    if (Object.keys(stavkica).length == 4) {
+    if (Object.keys(stavkica).length == 6) {
       this.stavke = this.stavke.filter((stavka: any) => stavka.redni_broj != id);
     }
 

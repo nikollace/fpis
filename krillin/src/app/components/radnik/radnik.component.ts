@@ -95,6 +95,7 @@ export class RadnikComponent implements OnInit {
 
         this.service.insert(this.radnik).subscribe(res => {
           if (res) {
+            this.ocisti();
             this.openDialog(false, 'Uspešno!', 'Uspešno ste dodali radnika!');
           }
         });
