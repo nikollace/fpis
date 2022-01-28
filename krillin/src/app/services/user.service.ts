@@ -2,9 +2,6 @@ import { Injectable } from '@angular/core';
 import { SocialAuthService } from 'angularx-social-login';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { HttpClient } from '@angular/common/http';
-import { NavbarComponent } from '../components/navbar/navbar.component';
-import { BehaviorSubject, Observable, Subject } from 'rxjs';
-import { Narudzbenica } from '../model/narudzbenica';
 
 const TOKEN_KEY = 'jwt-token';
 const helper = new JwtHelperService();
